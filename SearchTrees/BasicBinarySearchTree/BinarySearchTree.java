@@ -11,6 +11,9 @@
  *
  * While the average time-complexity for most operations will remain at O(logN)
  * for this implementation, worst case will be O(N).
+ *
+ * This implementation also does not account for duplicate entries. In this 
+ * way it is more similar to a set.
  */
 public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
 
@@ -145,18 +148,50 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
 	root = insert(element, root);
     }
 
+    /**
+     * Private helper method that recursively inserts an element into some tree.
+     * @param element the value to be inserted
+     * @param tree the tree to insert the element into
+     * @return the root node of the tree after insertion is complete
+     */
     private BinaryNode<SomeType> insert(SomeType element, BinaryNode<SomeType> tree) {
 	if(tree == null) {
 	    return new BinaryNode<SomeType>(element, null, null);
 	}
 	int result = element.compareTo(tree.element);
 	if(result < 0) {
-	    tree = insert(element, tree.left);
+	    tree.left = insert(element, tree.left);
 	} else if(result > 0){
-	    tree = insert(element, tree.right);
+	    tree.right = insert(element, tree.right);
 	}
 	return tree;
     }
     
+    /**
+     * Prints the tree to the terminal in order.
+     */
+    public void printInOrder() {
+	System.out.println(toStringInOrder());
+    }
+
+    /**
+     * Does an in-order traversal of the tree and returns it as a String.
+     * @return a String containing the in order traversal of the tree.
+     */
+    public String toStringInOrder() {
+	return toStringInOrder(root);
+    }
+    
+    /**
+     * Private helper method which recursively builds a String consisting of 
+     * the contents of the Tree in order.
+     */
+    private String toStringInOrder(BinaryNode<SomeType> tree) {
+	if(tree == null) return "";
+	String str = toStringInOrder(tree.left);
+	str += tree.element + " ";
+	str += toStringInOrder(tree.right);
+	return str;
+    }
 
 }

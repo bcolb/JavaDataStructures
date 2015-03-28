@@ -10,8 +10,7 @@
  * any production code.
  *
  * While the average time-complexity for most operations will remain at O(logN)
- * for this implementation, worst case will be O(N) as the tree is still
- * unbalanced.
+ * for this implementation, worst case will be O(N).
  */
 public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
 
@@ -104,7 +103,7 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
      * @preturn the minimum item in the tree.
      */
     public SomeType findMin() {
-	return findMin(root);
+	return findMin(root).element;
     }
 
     /**
@@ -113,9 +112,9 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
      * @param tree - the tree to search in.
      * @return The minimum value in the tree (null if empty)
      */ 
-    private SomeType findMin(BinaryNode<SomeType> tree) {
+    private BinaryNode<SomeType> findMin(BinaryNode<SomeType> tree) {
 	if(tree == null) return null;
-	if(tree.left == null) return tree.element;
+	if(tree.left == null) return tree;
 	return findMin(tree.left);
     }
 
@@ -124,7 +123,7 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
      * @return the maximum item.
      */
     public SomeType findMax() {
-	findMax(root);
+	return findMax(root).element;
     }
     
     /**
@@ -132,10 +131,31 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
      * @param tree the tree to search.
      * @return the maximum item in that subtree.
      */
-    private SomeType findMax(BinaryNode<SomeType> tree) {
-	if(tree == null) return tree;
-	if(tree.right == null) return tree.element;
+    private BinaryNode<SomeType> findMax(BinaryNode<SomeType> tree) {
+	if(tree == null) return null;
+	if(tree.right == null) return tree;
 	return findMax(tree.right);
+    }
+
+    /** 
+     * Inserts an element into the tree.
+     * @param element the value to be inserted
+     */
+    public void insert(SomeType element) {
+	root = insert(element, root);
+    }
+
+    private BinaryNode<SomeType> insert(SomeType element, BinaryNode<SomeType> tree) {
+	if(tree == null) {
+	    return new BinaryNode<SomeType>(element, null, null);
+	}
+	int result = element.compareTo(tree.element);
+	if(result < 0) {
+	    tree = insert(element, tree.left);
+	} else if(result > 0){
+	    tree = insert(element, tree.right);
+	}
+	return tree;
     }
     
 

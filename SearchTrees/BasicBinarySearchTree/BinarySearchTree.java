@@ -13,7 +13,7 @@
  * for this implementation, worst case will be O(N).
  *
  * This implementation also does not account for duplicate entries. In this 
- * way it is more similar to a set.
+ * way it is more similar to a tree set.
  */
 public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
 
@@ -166,6 +166,38 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
 	}
 	return tree;
     }
+
+    /**
+     * Removes an item from the tree.
+     * @param element to be removed 
+     */
+    public void remove(SomeType element) {
+	root = remove(element, root);
+    }
+
+    /** 
+     * Private helper method that recursively removes an element from the tree.
+     * @param element to be removed
+     * @param tree to remove element from
+     * @return the new root node
+     */
+    private BinaryNode<SomeType> remove(SomeType element, BinaryNode<SomeType> tree) {
+	if(tree == null) return null;
+	int result = element.compareTo(tree.element);
+	if(result < 0) {
+	    tree.left = remove(element, tree.left);
+	} else if (result > 0) {
+	    tree.right = remove(element, tree.right);
+	} else if(tree.left != null && tree.right != null) {
+	    tree.element = findMin(tree.right).element;
+	    tree.right = remove(tree.element, tree.right);
+	} else {
+	    // if left subtree is not null, tree becomes left subtree
+	    // otherwise use right subtree
+	    tree = (tree.left != null) ? tree.left : tree.right;
+	}
+	return tree;
+    }
     
     /**
      * Prints the tree to the terminal in order.
@@ -191,6 +223,64 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
 	String str = toStringInOrder(tree.left);
 	str += tree.element + " ";
 	str += toStringInOrder(tree.right);
+	return str;
+    }
+
+    /**
+     * Prints the tree traversal in preorder.
+     */
+    public void printPreOrder() {
+	System.out.println(toStringPreOrder());
+    }
+
+    /**
+     * Returns a String from a pre-order traversal of the BST.
+     * @return the preorder String
+     */
+    public String toStringPreOrder() {
+	return toStringPreOrder(root);
+    }
+
+    /**
+     * Private helper method which returns a String representing the 
+     * preorder traversal of the BST.
+     * @param tree to traverse.
+     * @return String representing the preorder traversal.
+     */
+    private String toStringPreOrder(BinaryNode<SomeType> tree) {
+	if(tree == null) return "";
+	String str = tree.element + " ";
+	str += toStringPreOrder(tree.left);
+	str += toStringPreOrder(tree.right);
+	return str;
+    }
+
+    /**
+     * Prints the postorder tree traversal.
+     */
+    public void printPostOrder() {
+	System.out.println(toStringPostOrder());
+    }
+
+    /**
+     * Gets a String representing the postorder traversal of the BST.
+     * @return String representing the postorder traversal of the BST.
+     */
+    public String toStringPostOrder() {
+	return toStringPostOrder(root);
+    }
+
+    /**
+     * Private helper method which returns a String representing the 
+     * postorder traversal of the BST.
+     * @param tree to traverse
+     * @return String representing the postorder traversal.
+     */
+    public String toStringPostOrder(BinaryNode<SomeType> tree) {
+	if(tree == null) return "";
+	String str = toStringPostOrder(tree.left);
+	str += toStringPostOrder(tree.right);
+	str += tree.element + " ";
 	return str;
     }
 

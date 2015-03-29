@@ -1,3 +1,3 @@
 #!/bin/bash
 javac TestBinarySearchTree.java
-java TestBinarySearchTree
+java TestBinarySearchTree < test1.txt

@@ -30,6 +30,9 @@ public class TestBinarySearchTree {
 	return result.equals(str);
     }
 
+    /**
+     * Reads input from text files and executes test strings.
+     */
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 	int testCases = Integer.parseInt(scan.nextLine());
@@ -38,6 +41,7 @@ public class TestBinarySearchTree {
 	System.out.println("***** Testing Binary Search Tree *****");
 	for(int i = 0; i < testCases; i++) {
 	    System.out.println(" - Test Case " + i);
+	    int numElements = Integer.parseInt(scan.nextLine());
 	    String insertStr = scan.nextLine();
 	    BinarySearchTree<Integer> bst = createTree(insertStr);
 	    String testStr = scan.nextLine();
@@ -47,6 +51,13 @@ public class TestBinarySearchTree {
 		passed++;
 	    } else {
 		System.out.println("    FAILED insertion test");
+	    }
+	    totalTests++;
+	    if(bst.getSize() == numElements) {
+		System.out.println("    PASSED size test");
+		passed++;
+	    } else {
+		System.out.println("    FAILED size test");
 	    }
 	    int deletionTests = Integer.parseInt(scan.nextLine());
 	    for(int j = 0; j < deletionTests; j++) {

@@ -30,7 +30,7 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
 	/**
 	 * A single parameter constructor that takes an element as the sole
 	 * parameter.
-	 * @param element the element for the new node
+	 * @param element for the new node
 	 */
 	BinaryNode(SomeType element) {
 	    // Call to the three parameter constructor
@@ -73,6 +73,55 @@ public class BinarySearchTree<SomeType extends Comparable<? super SomeType>> {
     public boolean isEmpty() {
 	return this.root==null;
     }
+
+    /**
+     * The size or number of elements in the tree computed by visiting each
+     * node. Will take O(N) time. Could keep a treeSize field, but would be
+     * thrown off when duplicates are passed in.
+     * @return size of the tree
+     */
+    public int getSize() {
+	return getSize(root);
+    }
+
+    /**
+     * A private helper method that gets the size of a tree by vising each
+     * node in the subtree.
+     * @param tree to traverse
+     * @return size of the tree
+     */
+    private int getSize(BinaryNode<SomeType> tree) {
+	if(tree == null) return 0;
+	return 1 + getSize(tree.left) + getSize(tree.right);
+    }
+
+    /**
+     * Gets the height of the tree. There seems to be some disagreement
+     * as to the height of a null or invalid tree. Here it returns a height
+     * of 0, though some implementations suggest return -1 for an 
+     * empty tree. A singleton tree returns 0.
+     * @return height of the tree
+     */
+    public int getHeight() {
+	if(this.isEmpty()) return 0;
+	return getHeight(root);
+    }
+
+    /**
+     * Private helper method that recursively computes the height of the tree.
+     * @param tree to start with
+     * @return height of that tree
+     */
+    public int getHeight(BinaryNode<SomeType> tree) {
+	if(tree == null) {
+	    return -1;
+	}
+	int left = getHeight(tree.left);
+	int right = getHeight(tree.right);
+	if(left > right) return 1 + left;
+	return 1 + right;
+    }
+
 
     /**
      * Finds an item in a subtree by calling a recursive helper method.
